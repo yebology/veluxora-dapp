@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   createAppKit,
   useAppKit,
@@ -9,7 +9,7 @@ import { optimismSepolia, type AppKitNetwork } from "@reown/appkit/networks";
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
 import { truncate } from "./utils/helper";
 
-const projectId = import.meta.env.PROJECT_ID;
+const projectId = import.meta.env.VITE_PROJECT_ID;
 
 const networks: [AppKitNetwork] = [optimismSepolia];
 

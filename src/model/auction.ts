@@ -1,0 +1,16 @@
+export interface Auction {
+    id: string,
+    name: string,
+    image: string,
+    description: string,
+    creator: string,
+    bpkbId: number,
+    stnkId: number,
+    minBid: number,
+    highestBid: number,
+    highestBidder: string,
+    startTime: number,
+    endTime: number,
+    claimed: boolean,
+    canceled: boolean,
+}
