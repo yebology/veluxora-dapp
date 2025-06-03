@@ -17,3 +17,17 @@ export async function bid(
     return "";
   }
 }
+
+export async function claimNFTForAuctionWinner(
+  walletProvider: any,
+  id: string
+) {
+  try {
+    const contract = await getContractWithSigner(walletProvider);
+    const transaction = await contract.claimNFTForAuctionWinner(id);
+    return transaction;
+  } catch (error) {
+    console.log(error);
+    return "";
+  }
+}
