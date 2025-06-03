@@ -1,8 +1,17 @@
 import { formatEther } from "ethers";
-import {
-  getAuctionDetailOnServer,
-} from "../server/handler";
+import { getAuctionDetailOnServer } from "../server/handler";
 import { getContractWithoutSigner } from "./connector";
+
+export async function tokenURI(tokenId: number) {
+  try {
+    const contract = await getContractWithoutSigner();
+    const tokenURI = await contract.tokenURI(tokenId);
+    return tokenURI;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
 
 export async function getBidHistory(auctionId: string) {
   try {
@@ -11,7 +20,7 @@ export async function getBidHistory(auctionId: string) {
     return structuredBidHistory(bidHistory);
   } catch (error) {
     console.log(error);
-    return "";
+    return;
   }
 }
 
@@ -22,7 +31,7 @@ export async function getAuctionDetail(auctionId: string) {
     return structuredAuction(auction);
   } catch (error) {
     console.log(error);
-    return "";
+    return;
   }
 }
 
@@ -54,6 +63,6 @@ async function structuredAuction(auction: any) {
       canceled: auction.canceled,
     };
   } else {
-    return "";
+    return;
   }
 }

@@ -1,6 +1,4 @@
-import {
-  createAuctionOnServer,
-} from "../server/handler";
+import { createAuctionOnServer, updateAuctionOnServer } from "../server/handler";
 import { getContractWithSigner } from "./connector";
 
 export async function createAuction(
@@ -12,10 +10,8 @@ export async function createAuction(
   minBid: number,
   startTime: number,
   endTime: number,
-  bpkbTokenId: number,
-  stnkTokenId: number,
-  bpkbUri: string,
-  stnkUri: string
+  tokenId: number,
+  tokenUri: number
 ) {
   const convertedStartTime = Math.floor(startTime / 1000);
   const convertedEndTime = Math.floor(endTime / 1000);
@@ -30,18 +26,80 @@ export async function createAuction(
         minBid,
         convertedStartTime,
         convertedEndTime,
-        bpkbTokenId,
-        stnkTokenId,
-        bpkbUri,
-        stnkUri
+        tokenId,
+        tokenUri
       );
 
       return transaction;
     } catch (error) {
       console.log(error);
-      return "";
+      return;
     }
   } else {
-    return "";
+    return;
+  }
+}
+
+export async function updateAuction(
+  walletProvider: any,
+  name: string,
+  image: string,
+  description: string,
+  id: string,
+  minBid: number,
+  startTime: number,
+  endTime: number,
+  tokenId: number,
+  tokenUri: number
+) {
+  const convertedStartTime = Math.floor(startTime / 1000);
+  const convertedEndTime = Math.floor(endTime / 1000);
+
+  const serverRes = await updateAuctionOnServer(id, name, image, description);
+
+  if (serverRes) {
+    try {
+      const contract = await getContractWithSigner(walletProvider);
+      const transaction = await contract.updateAuction(
+        id,
+        minBid,
+        convertedStartTime,
+        convertedEndTime,
+        tokenId,
+        tokenUri
+      );
+
+      return transaction;
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  } else {
+    return;
+  }
+}
+
+export async function claimETHForAuctionCreator(
+  walletProvider: any,
+  id: string
+) {
+  try {
+    const contract = await getContractWithSigner(walletProvider);
+    const transaction = await contract.claimETHForAuctionCreator(id);
+    return transaction;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+
+export async function cancelAuction(walletProvider: any, id: string) {
+  try {
+    const contract = await getContractWithSigner(walletProvider);
+    const transaction = await contract.cancelAuction(id);
+    return transaction;
+  } catch (error) {
+    console.log(error);
+    return;
   }
 }

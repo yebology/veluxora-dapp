@@ -20,6 +20,25 @@ export async function createAuctionOnServer(
   }
 }
 
+export async function updateAuctionOnServer(
+  id: string,
+  name: string,
+  image: string,
+  description: string
+) {
+  try {
+    const res = await axios.patch(`<URL>/${id}`, {
+      name: name,
+      image: image,
+      description: description,
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+    return "";
+  }
+}
+
 export async function getAuctionDetailOnServer(id: string) {
   try {
     const res = await axios.get(`<URL>/${id}`);
