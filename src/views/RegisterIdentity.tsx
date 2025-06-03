@@ -1,4 +1,4 @@
-export const Auction = () => {
+export const RegisterIdentity = () => {
   return (
     <div>
       <div>aaa</div>
