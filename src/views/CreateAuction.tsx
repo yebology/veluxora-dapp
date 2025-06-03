@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { pinata } from "../global/pinata";
 
 export const CreateAuction = (docs: File) => {
@@ -17,28 +18,28 @@ export const CreateAuction = (docs: File) => {
   const uploadLuxuryCarMetadata = async () => {
     try {
       const file = await pinata.upload.json({
-        name: "",
-        image: "",
-        description: "",
+        name: name,
+        image: image,
+        description: description,
         vehicle: {
-          plateNumber: "",
-          brand: "",
-          model: "",
-          year: 0,
-          color: "",
+          plateNumber: plateNumber,
+          brand: brand,
+          model: model,
+          year: parseInt(year),
+          color: color,
         },
         stnk: {
-          number: 0,
-          issuedBy: "",
-          issuedDate: "",
-          validUntil: "",
-          encryptedFileUrl: "",
+          number: stnkNumber,
+          issuedBy: stnkIssuedBy,
+          issuedDate: stnkIssuedDate,
+          validUntil: stnkValidUntil,
+          encryptedFileUrl: stnkEncryptedFileUrl,
         },
         bpkb: {
-          number: 0,
-          issuedBy: "",
-          issuedDate: "",
-          encryptedFileUrl: "",
+          number: bpkbNumber,
+          issuedBy: bpkbIssuedBy,
+          issuedDate: bpkbIssuedDate,
+          encryptedFileUrl: bpkbEncryptedFileUrl,
         },
       });
       return "https://gateway.pinata.cloud/" + file.IpfsHash;
@@ -47,6 +48,27 @@ export const CreateAuction = (docs: File) => {
       return;
     }
   };
+
+  const [name, setName] = useState("")
+  const [image, setImage] = useState("")
+  const [description, setDescription] = useState("")
+
+  const [plateNumber, setPlateNumber] = useState("")
+  const [brand, setBrand] = useState("")
+  const [model, setModel] = useState("")
+  const [year, setYear] = useState("")
+  const [color, setColor] = useState("")
+
+  const [stnkNumber, setStnkNumber] = useState("")
+  const [stnkIssuedBy, setStnkIssuedBy] = useState("")
+  const [stnkIssuedDate, setStnkIssuedDate] = useState("")
+  const [stnkValidUntil, setStnkValidUntil] = useState("")
+  const [stnkEncryptedFileUrl, setStnkEncryptedFileUrl] = useState("")
+  
+  const [bpkbNumber, setBpkbNumber] = useState("")
+  const [bpkbIssuedBy, setBpkbIssuedBy] = useState("")
+  const [bpkbIssuedDate, setBpkbIssuedDate] = useState("")
+  const [bpkbEncryptedFileUrl, setBpkbEncryptedFileUrl] = useState("")
 
   return (
     <div>
