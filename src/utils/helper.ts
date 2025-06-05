@@ -14,3 +14,13 @@ export function truncate(
   }
   return text;
 }
+
+export function errorMessage(err: any) {
+  const convertedError = err as any;
+  if (convertedError.reason) {
+    return convertedError.reason;
+  }
+  else {
+    return "Unknown error"
+  }
+}

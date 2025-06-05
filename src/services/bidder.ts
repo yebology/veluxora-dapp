@@ -1,20 +1,28 @@
 import { parseEther } from "ethers";
 import { getContractWithSigner } from "./connector";
+import { errorMessage } from "../utils/helper";
 
+// done test
 export async function bid(
   walletProvider: any,
   auctionId: string,
-  bidAmount: string
+  bidAmount: number
 ) {
   try {
     const contract = await getContractWithSigner(walletProvider);
     const transaction = await contract.bid(auctionId, {
-      value: BigInt(parseEther(bidAmount)),
+      value: BigInt(parseEther(bidAmount.toString())),
     });
-    return transaction;
+    return {
+      status: "pending",
+      data: transaction.hash
+    }
   } catch (error) {
     console.log(error);
-    return "";
+    return {
+      status: "error",
+      message: errorMessage(error)
+    };
   }
 }
 

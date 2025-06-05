@@ -1,6 +1,25 @@
 import { formatEther } from "ethers";
 import { getAuctionDetailOnServer } from "../server/handler";
-import { getContractWithoutSigner } from "./connector";
+import { getContractWithoutSigner, getContractWithSigner } from "./connector";
+import { errorMessage } from "../utils/helper";
+
+// done test
+export async function registerUser(walletProvider: any) {
+  try {
+    const contract = await getContractWithSigner(walletProvider);
+    const transaction = await contract.registerUser();
+    return {
+      status: "pending",
+      data: transaction.hash,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: "error",
+      message: errorMessage(error),
+    };
+  }
+}
 
 export async function tokenURI(tokenId: number) {
   try {
