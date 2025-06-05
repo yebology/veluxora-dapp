@@ -12,9 +12,19 @@ import {
 } from "@reown/appkit/networks";
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
 import { truncate } from "./utils/helper";
-import { createAuction, updateAuction } from "./services/creator";
-import { registerUser } from "./services/public";
-import { bid } from "./services/bidder";
+import {
+  cancelAuction,
+  claimETHForAuctionCreator,
+  createAuction,
+  updateAuction,
+} from "./services/creator";
+import {
+  getAuctionDetail,
+  getBidHistory,
+  registerUser,
+  tokenURI,
+} from "./services/public";
+import { bid, claimNFTForAuctionWinner } from "./services/bidder";
 
 const projectId = import.meta.env.VITE_PROJECT_ID;
 
@@ -39,13 +49,14 @@ function App() {
   const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider("eip155");
   const orderId = "order_1749095802";
+  const orderId2 = "order_1749106636";
 
   useEffect(() => {}, [isConnected, address]);
 
   const handleCreateAuction = async () => {
-    const tokenId = 5;
-    const startTime = Math.floor(Date.now() / 1000) + (5 * 60);
-    const endTime = startTime + (15 * 60);
+    const tokenId = 6;
+    const startTime = Math.floor(Date.now() / 1000) + 15 * 60;
+    const endTime = startTime + 15 * 60;
     console.log(
       await createAuction(
         walletProvider,
@@ -63,8 +74,8 @@ function App() {
 
   const handleUpdateAuction = async () => {
     const tokenId = 4;
-    const startTime = Math.floor(Date.now() / 1000) + (2 * 60);
-    const endTime = startTime + (30 * 60);
+    const startTime = Math.floor(Date.now() / 1000) + 2 * 60;
+    const endTime = startTime + 30 * 60;
     console.log(
       await updateAuction(
         walletProvider,
@@ -85,8 +96,34 @@ function App() {
     console.log(await bid(walletProvider, orderId, 0.0001));
   };
 
+  const handleClaimNFT = async () => {
+    console.log(await claimNFTForAuctionWinner(walletProvider, orderId));
+  };
+
+  const handleClaimETH = async () => {
+    console.log(await claimETHForAuctionCreator(walletProvider, orderId));
+  };
+
   const handleRegisterUser = async () => {
     console.log(await registerUser(walletProvider));
+  };
+
+  const handleCancelAuction = async () => {
+    console.log(await cancelAuction(walletProvider, orderId2));
+  };
+
+  const getTokenURI = async () => {
+    console.log(await tokenURI(6));
+  };
+
+  const bidHistory = async () => {
+    console.log(await getBidHistory(orderId));
+    console.log(await getBidHistory(orderId2));
+  };
+
+  const auctionDetail = async () => {
+    console.log(await getAuctionDetail(orderId));
+    console.log(await getAuctionDetail(orderId2));
   };
 
   return (
@@ -121,6 +158,42 @@ function App() {
           onClick={() => handleBidUser()}
         >
           Bid Auction
+        </button>
+        <button
+          className="rounded-xl p-2 shadow-sm font-bold text-white bg-pink-500"
+          onClick={() => handleClaimNFT()}
+        >
+          Claim NFT
+        </button>
+        <button
+          className="rounded-xl p-2 shadow-sm font-bold text-white bg-pink-500"
+          onClick={() => handleClaimETH()}
+        >
+          Claim ETH
+        </button>
+        <button
+          className="rounded-xl p-2 shadow-sm font-bold text-white bg-pink-500"
+          onClick={() => handleCancelAuction()}
+        >
+          Cancel Auction
+        </button>
+        <button
+          className="rounded-xl p-2 shadow-sm font-bold text-white bg-blue-500"
+          onClick={() => getTokenURI()}
+        >
+          Token URI
+        </button>
+        <button
+          className="rounded-xl p-2 shadow-sm font-bold text-white bg-blue-500"
+          onClick={() => bidHistory()}
+        >
+          Bid History
+        </button>
+        <button
+          className="rounded-xl p-2 shadow-sm font-bold text-white bg-blue-500"
+          onClick={() => auctionDetail()}
+        >
+          Auction Detail
         </button>
       </div>
     </>

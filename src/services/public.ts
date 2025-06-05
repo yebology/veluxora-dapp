@@ -21,6 +21,7 @@ export async function registerUser(walletProvider: any) {
   }
 }
 
+// done test
 export async function tokenURI(tokenId: number) {
   try {
     const contract = await getContractWithoutSigner();
@@ -32,6 +33,7 @@ export async function tokenURI(tokenId: number) {
   }
 }
 
+// done test
 export async function getBidHistory(auctionId: string) {
   try {
     const contract = await getContractWithoutSigner();
@@ -43,6 +45,7 @@ export async function getBidHistory(auctionId: string) {
   }
 }
 
+// done test
 export async function getAuctionDetail(auctionId: string) {
   try {
     const contract = await getContractWithoutSigner();
@@ -54,6 +57,7 @@ export async function getAuctionDetail(auctionId: string) {
   }
 }
 
+// done test
 function structuredBidHistory(bidHistory: any) {
   return bidHistory.map((history: any) => ({
     bidder: history.bidder.toString(),
@@ -61,19 +65,19 @@ function structuredBidHistory(bidHistory: any) {
   }));
 }
 
+// done test
 async function structuredAuction(auction: any) {
   const serverAuction = await getAuctionDetailOnServer(auction.id);
 
   if (serverAuction) {
     return {
-      id: auction.id,
+      id: serverAuction.id,
       name: serverAuction.name,
       image: serverAuction.image,
       description: serverAuction.description,
       creator: auction.creator.toString(),
-      bpkbId: parseInt(auction.bpkbId),
-      stnkId: parseInt(auction.stnkId),
-      minBid: parseInt(auction.minBid),
+      tokenId: parseInt(auction.tokenId),
+      minBid: formatEther(auction.minBid),
       highestBid: formatEther(parseInt(auction.highestBid)),
       highestBidder: auction.highestBidder.toString(),
       startTime: parseInt(auction.startTime),

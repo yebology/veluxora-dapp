@@ -94,6 +94,7 @@ export async function updateAuction(
   // }
 }
 
+// done test
 export async function claimETHForAuctionCreator(
   walletProvider: any,
   id: string
@@ -101,20 +102,33 @@ export async function claimETHForAuctionCreator(
   try {
     const contract = await getContractWithSigner(walletProvider);
     const transaction = await contract.claimETHForAuctionCreator(id);
-    return transaction;
+    return {
+      status: "pending",
+      data: transaction.hash,
+    };
   } catch (error) {
     console.log(error);
-    return;
+    return {
+      status: "error",
+      data: errorMessage(error),
+    };
   }
 }
 
+// done test
 export async function cancelAuction(walletProvider: any, id: string) {
   try {
     const contract = await getContractWithSigner(walletProvider);
     const transaction = await contract.cancelAuction(id);
-    return transaction;
+    return {
+      status: "pending",
+      data: transaction.hash,
+    };
   } catch (error) {
     console.log(error);
-    return;
+    return {
+      status: "error",
+      data: errorMessage(error),
+    };
   }
 }

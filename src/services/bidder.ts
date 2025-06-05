@@ -26,6 +26,7 @@ export async function bid(
   }
 }
 
+// done test 
 export async function claimNFTForAuctionWinner(
   walletProvider: any,
   id: string
@@ -33,9 +34,15 @@ export async function claimNFTForAuctionWinner(
   try {
     const contract = await getContractWithSigner(walletProvider);
     const transaction = await contract.claimNFTForAuctionWinner(id);
-    return transaction;
+    return {
+      status: "pending",
+      data: transaction.hash
+    };
   } catch (error) {
     console.log(error);
-    return "";
+    return {
+      status: "error",
+      message: errorMessage(error)
+    };
   }
 }
