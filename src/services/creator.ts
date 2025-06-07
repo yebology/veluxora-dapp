@@ -69,7 +69,7 @@ export async function createAuction(
   // }
 }
 
-// done test + tambahi event di smart contract
+// done test
 export async function updateAuction(
   walletProvider: any,
   name: string,

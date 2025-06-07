@@ -3,7 +3,7 @@ import { Contract } from "ethers";
 import { BrowserProvider } from "ethers";
 import abi from '../abi/abi.json'
 
-export const CONTRACT_ADDRESS = "0xC112905923Be73F18512502174A06ABB72c16c9E";
+export const CONTRACT_ADDRESS = "0x7B3208a9Fc940cAB520A245e74b68D8eB1a58C9f";
 export const NETWORK_RPC = "https://ethereum-holesky-rpc.publicnode.com";
 
 export async function getContractWithSigner(walletProvider: any) {

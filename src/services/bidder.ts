@@ -50,7 +50,7 @@ export async function bid(
   }
 }
 
-// done test + tambahi message
+// done test
 export async function claimNFTForAuctionWinner(
   walletProvider: any,
   id: string
