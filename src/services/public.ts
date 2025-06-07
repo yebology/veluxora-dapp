@@ -8,9 +8,29 @@ export async function registerUser(walletProvider: any) {
   try {
     const contract = await getContractWithSigner(walletProvider);
     const transaction = await contract.registerUser();
+    const receipt = await transaction.wait();
+
+    const newUserRegisteredEvent = receipt.logs
+      .map((log: any) => {
+        try {
+          return contract.interface.parseLog(log);
+        } catch (error) {
+          return null;
+        }
+      })
+      .find((parsedLog: any) => parsedLog.name === "NewUserRegistered");
+
+    console.log(newUserRegisteredEvent);
+
     return {
-      status: "pending",
-      data: transaction.hash,
+      status: "success",
+      data: {
+        hash: transaction.hash,
+        event: {
+          user: newUserRegisteredEvent?.args?.user ?? "",
+          message: newUserRegisteredEvent?.args?.message ?? "",
+        },
+      },
     };
   } catch (error) {
     console.log(error);

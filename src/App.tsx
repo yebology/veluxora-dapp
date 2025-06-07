@@ -48,15 +48,15 @@ function App() {
   const { open } = useAppKit();
   const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider("eip155");
-  const orderId = "order_1749095802";
+  const orderId = "order_1749276104";
   const orderId2 = "order_1749106636";
 
   useEffect(() => {}, [isConnected, address]);
 
   const handleCreateAuction = async () => {
-    const tokenId = 6;
-    const startTime = Math.floor(Date.now() / 1000) + 15 * 60;
-    const endTime = startTime + 15 * 60;
+    const tokenId = 10;
+    const startTime = Math.floor(Date.now() / 1000) + (15 * 60);
+    const endTime = startTime + (15 * 60);
     console.log(
       await createAuction(
         walletProvider,
@@ -73,8 +73,8 @@ function App() {
   };
 
   const handleUpdateAuction = async () => {
-    const tokenId = 4;
-    const startTime = Math.floor(Date.now() / 1000) + 2 * 60;
+    const tokenId = 9;
+    const startTime = Math.floor(Date.now() / 1000) + 10 * 60;
     const endTime = startTime + 30 * 60;
     console.log(
       await updateAuction(
@@ -109,7 +109,7 @@ function App() {
   };
 
   const handleCancelAuction = async () => {
-    console.log(await cancelAuction(walletProvider, orderId2));
+    console.log(await cancelAuction(walletProvider, orderId));
   };
 
   const getTokenURI = async () => {

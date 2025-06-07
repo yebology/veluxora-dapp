@@ -1,4 +1,4 @@
-import { parseEther } from "ethers";
+import { formatEther, parseEther } from "ethers";
 import {
   createAuctionOnServer,
   updateAuctionOnServer,
@@ -32,9 +32,30 @@ export async function createAuction(
       tokenId,
       tokenUri
     );
+    const receipt = await transaction.wait();
+
+    const newAuctionCreatedEvent = receipt.logs
+      .map((log: any) => {
+        try {
+          return contract.interface.parseLog(log);
+        } catch (error) {
+          return null;
+        }
+      })
+      .find((parsedLog: any) => parsedLog.name === "NewAuctionCreated");
+
+    console.log(newAuctionCreatedEvent);
+
     return {
-      status: "pending",
-      data: transaction.hash,
+      status: "success",
+      data: {
+        hash: transaction.hash,
+        event: {
+          creator: newAuctionCreatedEvent?.args?.creator ?? "",
+          auctionId: newAuctionCreatedEvent?.args?.auctionId ?? "",
+          message: newAuctionCreatedEvent?.args?.message ?? "",
+        },
+      },
     };
   } catch (error) {
     console.log(error);
@@ -48,7 +69,7 @@ export async function createAuction(
   // }
 }
 
-// done test
+// done test + tambahi event di smart contract
 export async function updateAuction(
   walletProvider: any,
   name: string,
@@ -77,10 +98,29 @@ export async function updateAuction(
       tokenId,
       tokenUri
     );
+    const receipt = await transaction.wait();
+
+    const auctionUpdatedEvent = receipt.logs
+      .map((log: any) => {
+        try {
+          return contract.interface.parseLog(log);
+        } catch (error) {
+          return null;
+        }
+      })
+      .find((parsedLog: any) => parsedLog.name === "AuctionUpdated");
+
+    console.log(auctionUpdatedEvent);
 
     return {
-      status: "pending",
-      data: transaction.hash,
+      status: "success",
+      data: {
+        hash: transaction.hash,
+        event: {
+          auctionId: auctionUpdatedEvent?.args?.auctionId ?? "",
+          message: auctionUpdatedEvent?.args?.message ?? "",
+        },
+      },
     };
   } catch (error) {
     console.log(error);
@@ -102,9 +142,34 @@ export async function claimETHForAuctionCreator(
   try {
     const contract = await getContractWithSigner(walletProvider);
     const transaction = await contract.claimETHForAuctionCreator(id);
+    const receipt = await transaction.wait();
+
+    const winningETHTransferredEvent = receipt.logs
+      .map((log: any) => {
+        try {
+          return contract.interface.parseLog(log);
+        } catch (error) {
+          return null;
+        }
+      })
+      .find((parsedLog: any) => parsedLog.name === "WinningETHTransferred");
+
+    console.log(winningETHTransferredEvent);
+
     return {
-      status: "pending",
-      data: transaction.hash,
+      status: "success",
+      data: {
+        hash: transaction.hash,
+        event: {
+          creator: winningETHTransferredEvent?.args?.creator ?? "",
+          auctionId: winningETHTransferredEvent?.args?.auctionId ?? "",
+          amount:
+            String(
+              formatEther(winningETHTransferredEvent?.args?.amount) + " ETH"
+            ) ?? "0 ETH",
+          message: winningETHTransferredEvent?.args?.message ?? "",
+        },
+      },
     };
   } catch (error) {
     console.log(error);
@@ -120,9 +185,29 @@ export async function cancelAuction(walletProvider: any, id: string) {
   try {
     const contract = await getContractWithSigner(walletProvider);
     const transaction = await contract.cancelAuction(id);
+    const receipt = await transaction.wait();
+
+    const auctionCanceledEvent = receipt.logs
+      .map((log: any) => {
+        try {
+          return contract.interface.parseLog(log);
+        } catch (error) {
+          return null;
+        }
+      })
+      .find((parsedLog: any) => parsedLog.name === "AuctionCanceled");
+
+    console.log(auctionCanceledEvent);
+
     return {
-      status: "pending",
-      data: transaction.hash,
+      status: "success",
+      data: {
+        hash: transaction.hash,
+        event: {
+          auctionId: auctionCanceledEvent?.args?.auctionId ?? "",
+          message: auctionCanceledEvent?.args?.message ?? "",
+        },
+      },
     };
   } catch (error) {
     console.log(error);
