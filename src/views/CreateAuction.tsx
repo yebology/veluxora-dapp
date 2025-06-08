@@ -7,7 +7,7 @@ export const CreateAuction = (docs: File) => {
     try {
       return (
         "https://gateway.pinata.cloud/" +
-        (await pinata.upload.file(docs)).IpfsHash
+        (await pinata.upload.public.file(docs)).cid
       );
     } catch (error) {
       console.log(error);
@@ -17,7 +17,7 @@ export const CreateAuction = (docs: File) => {
 
   const uploadLuxuryCarMetadata = async () => {
     try {
-      const file = await pinata.upload.json({
+      const file = await pinata.upload.public.json({
         name: name,
         image: image,
         description: description,
@@ -42,7 +42,7 @@ export const CreateAuction = (docs: File) => {
           encryptedFileUrl: bpkbEncryptedFileUrl,
         },
       });
-      return "https://gateway.pinata.cloud/" + file.IpfsHash;
+      return "https://gateway.pinata.cloud/" + file.cid;
     } catch (error) {
       console.log(error);
       return;
