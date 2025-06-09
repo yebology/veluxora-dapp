@@ -6,10 +6,14 @@ import { errorMessage } from "../utils/helper";
 // done test
 export async function registerUser(walletProvider: any) {
   try {
+    // berarti perlu write
     const contract = await getContractWithSigner(walletProvider);
+    // nembak nama function di smart contract yang udah di deploy
     const transaction = await contract.registerUser();
+    // nunggu transaksi bener" masuk dan diconfirmed ke jaringan blockchain
     const receipt = await transaction.wait();
-
+    // kalo transaksi udah masuk ke jaringan blockchain, nanti kita dapet log transaksi
+    // disini kita select nama event aja
     const newUserRegisteredEvent = receipt.logs
       .map((log: any) => {
         try {
@@ -22,10 +26,11 @@ export async function registerUser(walletProvider: any) {
 
     console.log(newUserRegisteredEvent);
 
+    // lalu direturn
     return {
       status: "success",
       data: {
-        hash: transaction.hash,
+        hash: transaction.hash, // anggepane kek invoice id
         event: {
           user: newUserRegisteredEvent?.args?.user ?? "",
           message: newUserRegisteredEvent?.args?.message ?? "",
@@ -36,7 +41,7 @@ export async function registerUser(walletProvider: any) {
     console.log(error);
     return {
       status: "error",
-      message: errorMessage(error),
+      message: errorMessage(error), // return error sesuai dengan smart contract
     };
   }
 }
@@ -68,8 +73,11 @@ export async function getBidHistory(auctionId: string) {
 // done test
 export async function getAuctionDetail(auctionId: string) {
   try {
+    // cuma perlu read
     const contract = await getContractWithoutSigner();
+    // nembak function di smart contract
     const auction = await contract.getAuctionDetail(auctionId);
+    // buat parsing sesuaikan tipe data di javascript dengan solidity
     return structuredAuction(auction);
   } catch (error) {
     console.log(error);
