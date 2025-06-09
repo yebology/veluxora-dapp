@@ -28,7 +28,7 @@ import { bid, claimNFTForAuctionWinner } from "./services/bidder";
 
 const projectId = import.meta.env.VITE_PROJECT_ID;
 
-const networks: [AppKitNetwork] = [holesky];
+const networks: [AppKitNetwork] = [optimismSepolia];
 
 const metadata = {
   name: "Veluxora",
@@ -48,7 +48,7 @@ function App() {
   const { open } = useAppKit();
   const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider("eip155");
-  const orderId = "order_1749276104";
+  const orderId = "order_1749454183";
   const orderId2 = "order_1749106636";
 
   useEffect(() => {}, [isConnected, address]);
@@ -123,7 +123,7 @@ function App() {
 
   const auctionDetail = async () => {
     console.log(await getAuctionDetail(orderId));
-    console.log(await getAuctionDetail(orderId2));
+    // console.log(await getAuctionDetail(orderId2));
   };
 
   return (
